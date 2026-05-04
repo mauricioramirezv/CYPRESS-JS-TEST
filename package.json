@@ -1,0 +1,12 @@
+{
+  "name": "cypress-js-tests",
+  "version": "1.0.0",
+  "description": "Proyecto base con Cypress en JavaScript",
+  "scripts": {
+    "cypress:open": "npx cypress open",
+    "cypress:run": "npx cypress run"
+  },
+  "devDependencies": {
+    "cypress": "^15.14.2"
+  }
+}
