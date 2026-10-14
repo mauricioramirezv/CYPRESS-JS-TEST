@@ -33,6 +33,12 @@ En otra terminal, dentro del mismo proyecto:
 npm run cypress:open
 ```
 
+En otra terminal, dentro del mismo proyecto:
+
+```powershell
+npm test
+```
+
 Seleccione **E2E Testing**, un navegador y un archivo de `local`. La aplicación estará en http://127.0.0.1:4173. Para ejecutar desde la terminal con ese servidor ya abierto use `npm run cypress:run`.
 
 ## Qué se practica

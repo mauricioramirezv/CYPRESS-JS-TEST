@@ -10,6 +10,7 @@
     label { display: block; margin: .6rem 0; }
     input, select, button { font: inherit; padding: .4rem; }
     th, td { padding: .5rem; text-align: left; }
+    output { display: block; margin: 1em 0; }
     [hidden] { display: none !important; }
   </style>
 </head>
@@ -23,7 +24,7 @@
       <label>Contraseña <input data-cy="password" id="password" type="password" autocomplete="current-password"></label>
       <button data-cy="login-button" type="submit">Ingresar</button>
     </form>
-    <p data-cy="login-message" id="login-message" role="status"></p>
+    <output data-cy="login-message" id="login-message"></output>
     <div data-cy="private-area" id="private-area" hidden>Bienvenido al catálogo</div>
   </section>
   <section aria-labelledby="controls-title">
@@ -31,7 +32,7 @@
     <label><input data-cy="checkbox" type="checkbox"> Acepto la práctica</label>
     <label>Color <select data-cy="color"><option value="">Seleccione</option><option value="green">Verde</option><option value="blue">Azul</option></select></label>
     <button data-cy="message-button" type="button">Confirmar acción</button>
-    <p data-cy="action-message" role="status"></p>
+    <output data-cy="action-message"></output>
   </section>
   <section aria-labelledby="form-title">
     <h2 id="form-title">Formulario</h2>
@@ -40,9 +41,9 @@
       <label>Correo <input data-cy="email" type="email" required></label>
       <button data-cy="submit-contact" type="submit">Guardar</button>
     </form>
-    <p data-cy="contact-result" role="status"></p>
+    <output data-cy="contact-result"></output>
     <label>Archivo de práctica <input data-cy="upload" type="file"></label>
-    <p data-cy="file-name" role="status"></p>
+    <output data-cy="file-name"></output>
   </section>
   <section aria-labelledby="products-title">
     <h2 id="products-title">Productos</h2>
@@ -61,7 +62,13 @@
       const user = byTestId('username').value.trim();
       const pass = byTestId('password').value;
       const valid = user === 'estudiante' && pass === 'cypress';
-      byTestId('login-message').textContent = !user || !pass ? 'Complete usuario y contraseña' : valid ? 'Inicio de sesión exitoso' : 'Credenciales inválidas';
+      let message = 'Credenciales inválidas';
+      if (!user || !pass) {
+        message = 'Complete usuario y contraseña';
+      } else if (valid) {
+        message = 'Inicio de sesión exitoso';
+      }
+      byTestId('login-message').textContent = message;
       byTestId('private-area').hidden = !valid;
     });
     byTestId('message-button').addEventListener('click', () => {
