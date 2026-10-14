@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Laboratorio Cypress</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+    section { border: 1px solid #999; padding: 1rem; margin: 1rem 0; }
+    label { display: block; margin: .6rem 0; }
+    input, select, button { font: inherit; padding: .4rem; }
+    th, td { padding: .5rem; text-align: left; }
+    output { display: block; margin: 1em 0; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <h1 data-cy="title">Laboratorio Cypress</h1>
+  <p>Aplicación local con datos ficticios para practicar acciones y aserciones.</p>
+  <section aria-labelledby="login-title">
+    <h2 id="login-title">Ingreso</h2>
+    <form id="login-form" novalidate>
+      <label>Usuario <input data-cy="username" id="username" autocomplete="username"></label>
+      <label>Contraseña <input data-cy="password" id="password" type="password" autocomplete="current-password"></label>
+      <button data-cy="login-button" type="submit">Ingresar</button>
+    </form>
+    <output data-cy="login-message" id="login-message"></output>
+    <div data-cy="private-area" id="private-area" hidden>Bienvenido al catálogo</div>
+  </section>
+  <section aria-labelledby="controls-title">
+    <h2 id="controls-title">Controles</h2>
+    <label><input data-cy="checkbox" type="checkbox"> Acepto la práctica</label>
+    <label>Color <select data-cy="color"><option value="">Seleccione</option><option value="green">Verde</option><option value="blue">Azul</option></select></label>
+    <button data-cy="message-button" type="button">Confirmar acción</button>
+    <output data-cy="action-message"></output>
+  </section>
+  <section aria-labelledby="form-title">
+    <h2 id="form-title">Formulario</h2>
+    <form id="contact-form">
+      <label>Nombre <input data-cy="name" required></label>
+      <label>Correo <input data-cy="email" type="email" required></label>
+      <button data-cy="submit-contact" type="submit">Guardar</button>
+    </form>
+    <output data-cy="contact-result"></output>
+    <label>Archivo de práctica <input data-cy="upload" type="file"></label>
+    <output data-cy="file-name"></output>
+  </section>
+  <section aria-labelledby="products-title">
+    <h2 id="products-title">Productos</h2>
+    <label>Buscar <input data-cy="search" type="search"></label>
+    <table data-cy="products"><caption>Catálogo de práctica</caption><thead><tr><th scope="col">Producto</th><th scope="col">Precio</th></tr></thead><tbody>
+      <tr><td>Clean Code</td><td>30</td></tr>
+      <tr><td>Testing TypeScript</td><td>40</td></tr>
+      <tr><td>Curso Screenplay</td><td>50</td></tr>
+    </tbody></table>
+    <p data-cy="empty-results" hidden>Sin resultados</p>
+  </section>
+  <script>
+    const byTestId = name => document.querySelector(`[data-cy="${name}"]`);
+    document.querySelector('#login-form').addEventListener('submit', event => {
+      event.preventDefault();
+      const user = byTestId('username').value.trim();
+      const pass = byTestId('password').value;
+      const valid = user === 'estudiante' && pass === 'cypress';
+      let message = 'Credenciales inválidas';
+      if (!user || !pass) {
+        message = 'Complete usuario y contraseña';
+      } else if (valid) {
+        message = 'Inicio de sesión exitoso';
+      }
+      byTestId('login-message').textContent = message;
+      byTestId('private-area').hidden = !valid;
+    });
+    byTestId('message-button').addEventListener('click', () => {
+      byTestId('action-message').textContent = 'Acción confirmada';
+    });
+    document.querySelector('#contact-form').addEventListener('submit', event => {
+      event.preventDefault();
+      byTestId('contact-result').textContent = `Registrado: ${byTestId('name').value} (${byTestId('email').value})`;
+    });
+    byTestId('upload').addEventListener('change', event => {
+      byTestId('file-name').textContent = event.target.files[0]?.name ?? '';
+    });
+    byTestId('search').addEventListener('input', event => {
+      const query = event.target.value.toLowerCase();
+      const rows = [...document.querySelectorAll('tbody tr')];
+      rows.forEach(row => { row.hidden = !row.cells[0].textContent.toLowerCase().includes(query); });
+      byTestId('empty-results').hidden = rows.some(row => !row.hidden);
+    });
+  </script>
+</body>
+</html>

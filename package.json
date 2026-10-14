@@ -3,8 +3,12 @@
   "version": "1.0.0",
   "description": "Proyecto base con Cypress en JavaScript",
   "scripts": {
-    "cypress:open": "npx cypress open",
-    "cypress:run": "npx cypress run"
+    "dev": "node scripts/demo-server.cjs",
+    "test": "node scripts/run-local.cjs",
+    "test:server": "node --test tests/server.test.cjs",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "test:externos": "cypress run --config \"specPattern=cypress/e2e/externos/**/*.cy.js\""
   },
   "devDependencies": {
     "cypress": "^15.14.2"
